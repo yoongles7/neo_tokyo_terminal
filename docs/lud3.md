@@ -3,4 +3,4 @@
 ## Accomplished
 - [x] more python concepts
 - [x] Python object oriented programming
-- [x] pyhton file handling
+- [x] python file handling

@@ -10,7 +10,7 @@ from input_handler import EventHandler
 def main(stdscr) -> None:
     # Initialize curses
     curses.curs_set(0)  # Hide cursor
-    stdscr.keypad(True) # Enable special keys
+    #stdscr.keypad(True) # Enable special keys
     stdscr.nodelay(0)   # wait for the input
     
     # initialize colors
@@ -27,8 +27,8 @@ def main(stdscr) -> None:
     event_handler = EventHandler()
     
     player = Entity((screen_width // 2), (screen_height // 2), "@", curses.color_pair(1))
-    npc = Entity((screen_width //2 - 5), (screen_height // 2 - 5), "@", curses.color_pair(2))
-    entities = {npc, player}
+    npc = Entity((screen_width //2 - 5), (screen_height // 2 - 5), "@", curses.color_pair(3))
+    entities = [player, npc]
     
     engine = Engine(entities, event_handler, player, stdscr)
     
@@ -46,12 +46,13 @@ def main(stdscr) -> None:
         # get input
         try:
             key = stdscr.getkey()
-        except KeybordInterrupt:
+        except KeyboardInterrupt:
             break
         
         events = [key]
         
-        engine.handle_events(events)
+        if not engine.handle_events(events):
+            break
         
         
 

@@ -1,18 +1,19 @@
 import curses
 
-from typing import Set, Iterable, Any
+from typing import List, Iterable, Any
 from actions import EscapeAction, MovementAction
 from entity import Entity
 from input_handler import EventHandler
 
 class Engine: 
-    def __init__(self, entities: Set[Entity], event_handler: EventHandler, player: Entity, stdscr):
+    def __init__(self, entities: list[Entity], event_handler: EventHandler, player: Entity, stdscr):
         self.entities = entities
         self.event_handler = event_handler
         self.player = player
         self.stdscr = stdscr
         
-    def handle_events(self, events: Iterable[Any]) -> None:
+    def handle_events(self, events: Iterable[Any]) -> bool:
+        """Handle events and return False if game should quit, True otherwise"""
         for event in events:
             action = self.event_handler.dispatch(event)        # handle event
         
@@ -20,6 +21,8 @@ class Engine:
                 continue
             
             if isinstance(action, MovementAction):
+                screen_height, screen_width = self.stdscr.getmaxyx()
+                
                 # update player position with bounds checking
                 new_x = self.player.x + action.dx
                 new_y = self.player.y + action.dy
@@ -29,7 +32,9 @@ class Engine:
                     self.player.move(dx = action.dx, dy = action.dy)
                 
             elif isinstance(action, EscapeAction):
-                break
+                return False
+        
+        return True    
     
     def render(self):
         self.stdscr.clear()

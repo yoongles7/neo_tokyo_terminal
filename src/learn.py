@@ -21,7 +21,7 @@ def main(stdscr):
             break
             
         stdscr.clear()
-        stdscr.addstr(y, x, "@", RED_AND_BLACK | curses.A_BOLD)
+        stdscr.addstr(y, x, "@@@@@@@@@@@@@", RED_AND_BLACK | curses.A_BOLD)
         stdscr.refresh()
 
 wrapper(main)
